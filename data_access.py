@@ -73,4 +73,16 @@ def read_item_by_id(conn, table, id):
     cur.execute(sql, (id, ))
     row = cur.fetchone()
     return row
+
+def read_where(conn, table, **condition):
+    cur = conn.cursor()
+    cond = []
+    values = ()
+    for k, v in condition.items():
+        cond.append(f"{k}=?")
+        values +=(v, )
+    c = " AND ".join(cond)
+    cur.execute(f"SELECT * FROM {table} WHERE {c}", values)
+    rows = cur.fetchall()
+    return rows
     

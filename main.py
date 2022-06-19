@@ -19,3 +19,4 @@ if __name__ == "__main__":
     data_access.add_task(connection, task)
     presentation.display_all_items(data_access.read_all(connection, 'projects'))
     presentation.display_selected_item(data_access.read_item_by_id(connection, 'tasks', 1))
+    presentation.display_all_items(data_access.read_where(connection, 'projects', name="Powtórka z matematyki"))
