@@ -97,3 +97,20 @@ def update(conn, table, id, **kwargs):
         conn.commit()
     except sqlite3.OperationalError as e:
         print(e)
+
+def delete_all(conn, table):
+    cur = conn.cursor()
+    cur.execute(f"DELETE FROM {table}")
+    conn.commit()
+    print("Data deleted")
+
+def delete_where(conn, table, **condition):
+    cur = conn.cursor()
+    cond = []
+    values = ()
+    for k, v in condition.items():
+        cond.append(f"{k}=?")
+        values += (v, )
+    c = " AND ".join(cond)
+    cur.execute("DELETE FROM {table} WHERE {c}", values)
+    conn.commit()
