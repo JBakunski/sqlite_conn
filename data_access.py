@@ -60,5 +60,10 @@ def add_task(conn, task):
     conn.commit()
     print("New task added")
 
-
+def read_all(conn, table):
+    sql = f"""SELECT * FROM {table}"""
+    cur = conn.cursor()
+    cur.execute(sql)
+    rows = cur.fetchall()
+    return rows
     
