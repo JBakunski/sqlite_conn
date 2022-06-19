@@ -112,5 +112,5 @@ def delete_where(conn, table, **condition):
         cond.append(f"{k}=?")
         values += (v, )
     c = " AND ".join(cond)
-    cur.execute("DELETE FROM {table} WHERE {c}", values)
+    cur.execute(f"DELETE FROM {table} WHERE {c}", values)
     conn.commit()

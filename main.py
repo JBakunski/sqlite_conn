@@ -21,6 +21,7 @@ if __name__ == "__main__":
     presentation.display_selected_item(data_access.read_item_by_id(connection, 'tasks', 1))
     presentation.display_all_items(data_access.read_where(connection, 'projects', name="Powtórka z matematyki"))
     data_access.update(connection, 'projects', 2, start_date="2023-01-31", end_date='2023-12-31')
-    presentation.display_all_items(data_access.read_all(connection, 'tasks'))
     data_access.delete_all(connection, 'tasks')
+    data_access.delete_where(connection, 'projects', id=2)
+
     
