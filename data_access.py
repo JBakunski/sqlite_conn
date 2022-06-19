@@ -85,4 +85,15 @@ def read_where(conn, table, **condition):
     cur.execute(f"SELECT * FROM {table} WHERE {c}", values)
     rows = cur.fetchall()
     return rows
-    
+
+def update(conn, table, id, **kwargs):
+    parameters = [f"{k}=?" for k in kwargs]
+    parameters = ", ".join(parameters)
+    values = tuple(v for v in kwargs.values())
+    values += (id, )
+    try:
+        cur = conn.cursor()
+        cur.execute(f"UPDATE {table} SET {parameters} WHERE id =?", values)
+        conn.commit()
+    except sqlite3.OperationalError as e:
+        print(e)
