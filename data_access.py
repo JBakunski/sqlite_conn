@@ -66,4 +66,11 @@ def read_all(conn, table):
     cur.execute(sql)
     rows = cur.fetchall()
     return rows
+
+def read_item_by_id(conn, table, id):
+    sql = f"SELECT * FROM {table} WHERE id=?"
+    cur = conn.cursor()
+    cur.execute(sql, (id, ))
+    row = cur.fetchone()
+    return row
     
