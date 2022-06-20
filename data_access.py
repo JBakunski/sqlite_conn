@@ -4,7 +4,6 @@ from sqlite3 import Error
 
 def get_connection(db_file):
     with sqlite3.Connection(db_file) as conn:
-        print(f"Connected to {db_file}")
         return conn
 
 
