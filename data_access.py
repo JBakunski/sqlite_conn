@@ -16,49 +16,47 @@ def execute_sql(connection, sql):
         print(e)
 
 def create_database(db_file):
-    create_projects_table_sql = """
-    CREATE TABLE IF NOT EXISTS projects
+    create_orders_table_sql = """
+    CREATE TABLE IF NOT EXISTS orders
     (
         id int NOT NULL,
-        name varchar(255) NOT NULL,
-        start_date text,
-        end_date text,
+        order_number varchar(255) NOT NULL,
+        order_date text,
+        delivery_date text,
         PRIMARY KEY(id)
     );
     """
-    create_tasks_table_sql = """
-    CREATE TABLE IF NOT EXISTS tasks
+    create_orderlines_table_sql = """
+    CREATE TABLE IF NOT EXISTS orderlines
     (
         id int NOT NULL,
-        project_id int NOT NULL,
-        name varchar(255) NOT NULL,
+        order_id int NOT NULL,
+        product_number varchar(255) NOT NULL,
         description varchar(255),
-        status varchar(100) NOT NULL,
-        start_date text,
-        end_date text,
+        qty int NOT NULL,
         PRIMARY KEY(id),
-        FOREIGN KEY(project_id) REFERENCES projects(id)
+        FOREIGN KEY(order_id) REFERENCES orders(id)
     );
     """
     conn = get_connection(db_file)
     if conn:
-        execute_sql(conn, create_projects_table_sql)
-        execute_sql(conn, create_tasks_table_sql)
+        execute_sql(conn, create_orders_table_sql)
+        execute_sql(conn, create_orderlines_table_sql)
     
-def add_project(conn, project):
+def add_order(conn, order):
     sql = """
-    INSERT INTO projects (id, name, start_date, end_date) VALUES (?,?,?,?)"""
+    INSERT INTO orders (id, order_number, order_date, delivery_date) VALUES (?,?,?,?)"""
     cur = conn.cursor()
-    cur.execute(sql, project)
+    cur.execute(sql, order)
     conn.commit()
-    print("New project added")
+    print("New order added")
 
-def add_task(conn, task):
-    sql = """INSERT INTO tasks (id, project_id, name, description, status, start_date, end_date) VALUES (?,?,?,?,?,?,?)"""
+def add_orderline(conn, orderline):
+    sql = """INSERT INTO orderlines (id, order_id, product_number, description, qty) VALUES (?,?,?,?,?)"""
     cur = conn.cursor()
-    cur.execute(sql, task)
+    cur.execute(sql, orderline)
     conn.commit()
-    print("New task added")
+    print("New orderline added")
 
 def read_all(conn, table):
     sql = f"""SELECT * FROM {table}"""
