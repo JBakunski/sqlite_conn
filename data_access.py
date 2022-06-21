@@ -4,6 +4,7 @@ from sqlite3 import Error
 
 def get_connection(db_file):
     with sqlite3.Connection(db_file) as conn:
+        print(f"Successfully connected to {db_file} database.")
         return conn
 
 
@@ -14,14 +15,14 @@ def execute_sql(connection, sql):
     except Error as e:
         print(e)
 
-def create_database(db_file):
+def create_database(db_file, connection):
     create_orders_table_sql = """
     CREATE TABLE IF NOT EXISTS orders
     (
         id int NOT NULL,
         order_number varchar(255) NOT NULL,
-        order_date text,
-        delivery_date text,
+        order_date date,
+        delivery_date date,
         PRIMARY KEY(id)
     );
     """
@@ -37,10 +38,10 @@ def create_database(db_file):
         FOREIGN KEY(order_id) REFERENCES orders(id)
     );
     """
-    conn = get_connection(db_file)
-    if conn:
-        execute_sql(conn, create_orders_table_sql)
-        execute_sql(conn, create_orderlines_table_sql)
+    
+    if connection:
+        execute_sql(connection, create_orders_table_sql)
+        execute_sql(connection, create_orderlines_table_sql)
     
 def add_order(conn, order):
     sql = """
